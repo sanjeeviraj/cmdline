@@ -1,0 +1,26 @@
+body {
+  height: 100%;;
+  background-color: black;
+}
+.App {
+  text-align: center;
+  background-color: black;
+  color:white;
+  margin: 0 auto;
+}
+.inputarea{
+  margin-top:5%;
+}
+.outputarea{
+  
+  background-color: #FFF;
+  margin: 0px auto;
+  margin-top: 10%;
+  border-radius: 2px;
+height: 75px;
+width: 300px;
+}
+
+.outputarea span {
+  color:black;
+}
