@@ -1,40 +1,70 @@
 import React, { Component } from 'react';
 import './App.css';
-/*import axios from 'axios';
+import axios from 'axios';
 
-let authkey = {
-  "Accept": "application/json",
-  "app_id": "a82998f3",
-  "app_key": "3058a91d2f23df3b2c0ebaeb03b0195f"
-};*/
+
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {output:''};
   }
+  componentDidMount(){
+    document.getElementById("textinput").focus();
+  }
+  addLine = (line) => {
+    var textNode = document.createTextNode(line);
+    //console.log('textNode',textNode);
+    let linebr = document.createElement("br");
+    document.getElementById("consoletext").appendChild(linebr);
+    document.getElementById("consoletext").appendChild(textNode);
+  }
+  checkInput= (event) => { console.log('keydown')
+    //let event ;
+    //event = window.event || event.which;
+    //console.log('event.event',event.key)
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        let word = document.getElementById("textinput").value;
+        if(word){
+          let url = `http://cognispire.com/reverse/reverse.ashx?name=${word}`
+          axios.get(url).then((response)=> {
+            console.log('response', response);
+            this.addLine(document.getElementById("textinput").value);
+            this.addLine(response.data);
+            document.getElementById("textinput").value = "";
+          });          
+        }        
+    }
+
+    document.getElementById("textinput").style.height = (document.getElementById("textinput").scrollHeight) + "px";
+  }
+
+
   getResponse = (word) => {
     if(word){
-      /*let url = `https://od-api.oxforddictionaries.com:443/api/v1/entries/en/${word}`
-      axios.get(url,authkey).then((response)=> {
+      let url = `http://cognispire.com/reverse/reverse.ashx?name=${word}`
+      axios.get(url).then((response)=> {
         console.log('response', response);
-      })*/
-      this.setState({output:'success'+Math.random()});
+      })
+      
     } else {
-      alert('no input');
+      console.log('no response');
     }
     
   }
   render() {
     return (
-      <div className="App">
-        <div className='inputarea'>
-          <input type="text"/>
-          <button onClick={this.getResponse}>Submit</button>
-        </div>
-        <div className='outputarea'>
-          <span>{this.state.output}</span>
-        </div>
-      </div>
+      <div id = "background">
+    <div id = "console">
+        <p className="consoletext">
+            Command line
+        </p>
+        <p className="consoletext" id = "consoletext">
+            
+        </p>
+        <textarea rows = "1" id = "textinput" onKeyPress={this.checkInput}></textarea>
+    </div>
+</div>
     );
   }
 }
